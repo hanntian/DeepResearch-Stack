@@ -1,0 +1,25 @@
+[project]
+name = "deepresearch-stack"
+version = "0.1.0"
+description = "Observable Retrieval System for ML Research and Technical Knowledge."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "aiohttp",
+    "arxiv",
+    "beautifulsoup4",
+    "fastapi",
+    "gradio",
+    "langchain",
+    "langchain-text-splitters",
+    "openai",
+    "python-dotenv",
+    "qdrant-client",
+    "requests",
+    "sentence-transformers",
+    "tqdm",
+    "uvicorn",
+]
+
+[tool.uv]
+package = false
