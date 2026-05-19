@@ -22,6 +22,10 @@ def chunk_documents(documents):
         chunk_size=512, 
         
         separators=["\n\n", "\n", ". ", " ", ""],
+        keep_separator="end",
+        # keep_separator=True：句号跑到下一块开头
+        # keep_separator="end"：句号留在前一块末尾
+        # keep_separator=False：句号会直接被去掉
     )
 
     chunks = []
@@ -46,14 +50,14 @@ def chunk_documents(documents):
 
 
 # ======Example Usage=====
-raw_documents_path = Path(__file__).resolve().parents[1] / "data" / "raw_documents.jsonl"
+# raw_documents_path = Path(__file__).resolve().parents[1] / "data" / "raw_documents.jsonl"
 
-with raw_documents_path.open(encoding="utf-8") as file:
-        documents = [json.loads(file.readline())] #读取文件的第一行
+# with raw_documents_path.open(encoding="utf-8") as file:
+#         documents = [json.loads(file.readline())] #读取文件的第一行
         
-chunks = chunk_documents(documents)
+# chunks = chunk_documents(documents)
 
-print("num chunks:", len(chunks))
-print(chunks)
+# print("num chunks:", len(chunks))
+# print(chunks)
 
 

@@ -98,21 +98,21 @@ class QdrantVectorStore:
         return retrieved_chunks
 
 # ===== Example usage =====
-from retrieval.chunking import chunks
-store = QdrantVectorStore()
-store.upsert_chunks(chunks)
+# from retrieval.chunking import chunks
+# store = QdrantVectorStore()
+# store.upsert_chunks(chunks)
 
-results = store.top_k_retrieve(
-    "Why is vLLM faster than standard inference?",
-    k=2,
-)
+# results = store.top_k_retrieve(
+#     "Why is vLLM faster than standard inference?",
+#     k=2,
+# )
 
-for item in results:
-    print("score:", item["score"])
-    print("title:", item["title"])
-    print("content:", item["content"])
-    print("url:", item["url"])
-    print()
+# for item in results:
+#     print("score:", item["score"])
+#     print("title:", item["title"])
+#     print("content:", item["content"])
+#     print("url:", item["url"])
+#     print()
 
 
 
