@@ -1,5 +1,3 @@
-import uuid
-
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
@@ -13,15 +11,6 @@ VECTOR_SIZE = 384
 Qdrant 的核心结构是 collection，里面存 points，每个 point 包含 vector 和 payload metadata；
 top k retrieval 就是把 query embedding 和库里的 document vectors 做相似度搜索，返回最接近的 K 个结果。
 """
-
-
-def build_point_id(chunk: dict) -> str:
-    source_id = chunk.get("source_id")
-    chunk_index = chunk.get("chunk_index", 0)
-
-    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"{source_id}:{chunk_index}"))
-
-
 class QdrantVectorStore:
     def __init__(self):
         self.client = QdrantClient(url="http://localhost:6333")
@@ -46,7 +35,8 @@ class QdrantVectorStore:
         embedded_chunks = self.embedder.embed_chunks(chunks)
 
         for embedded_chunk in embedded_chunks:
-            point_id = build_point_id(embedded_chunk)
+            chunk_id = embedded_chunk.get("chunk_id", "")
+            point_id = chunk_id
 
             points.append(
                 PointStruct(
@@ -54,7 +44,7 @@ class QdrantVectorStore:
                     vector=embedded_chunk["embedding"],
                     payload={
                         "source_id": embedded_chunk.get("source_id", ""),
-                        "chunk_id": embedded_chunk.get("chunk_id", ""),
+                        "chunk_id": chunk_id,
                         "chunk_index": embedded_chunk.get("chunk_index", -1),
                         "title": embedded_chunk.get("title", ""),
                         "content": embedded_chunk.get("content", ""),
@@ -87,6 +77,8 @@ class QdrantVectorStore:
                 {
                     "score": point.score,
                     "source_id": point.payload.get("source_id", ""),
+                    "chunk_id": point.payload.get("chunk_id", ""),
+                    "chunk_index": point.payload.get("chunk_index", -1),
                     "title": point.payload.get("title", ""),
                     "content": point.payload.get("content", ""),
                     "source": point.payload.get("source", ""),

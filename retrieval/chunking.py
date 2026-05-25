@@ -1,6 +1,8 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 import json
+import uuid
 from pathlib import Path
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 def chunk_documents(documents):
     splitter = RecursiveCharacterTextSplitter(
@@ -42,8 +44,10 @@ def chunk_documents(documents):
                 "source": doc.get("source", ""),
                 "url": doc.get("url", ""),
                 "date": doc.get("date", ""),
-                "chunk_id": f"{doc.get('source', 'unknown')}_{index}",
+                "source_id": doc.get("source_id", ""),
+                "chunk_id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"{doc.get('source_id')}:{index}")),
                 "chunk_index": index,
+                "chunk_label": f"{doc.get('source_id')}_{index}"
             })
 
     return chunks

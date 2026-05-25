@@ -15,6 +15,7 @@ dependencies = [
     "openai",
     "python-dotenv",
     "qdrant-client",
+    "rank-bm25",
     "requests",
     "sentence-transformers",
     "tqdm",

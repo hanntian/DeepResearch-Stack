@@ -37,27 +37,10 @@ class QAPipeline:
             return [json.loads(line) for line in file if line.strip()]
 
     def build_chunks(self, documents: list[dict] | None = None) -> list[dict]:
+        # source_id / chunk_id / chunk_index 由 chunking.chunk_documents 在切分时一次性生成
         if documents is None:
             documents = self.load_documents()
-
-        all_chunks = []
-
-        for doc in documents:
-            source_id = (
-                doc.get("source_id")
-                or doc.get("url")
-                or doc.get("title")
-                or doc.get("source", "unknown")
-            )
-
-            doc_chunks = chunk_documents([doc])
-
-            for chunk in doc_chunks:
-                chunk["source_id"] = source_id
-                chunk["chunk_id"] = f"{source_id}_{chunk['chunk_index']}"
-                all_chunks.append(chunk)
-
-        return all_chunks
+        return chunk_documents(documents)
 
     def index_documents(self, documents: list[dict] | None = None) -> list[dict]:
         chunks = self.build_chunks(documents)
